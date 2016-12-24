@@ -19,7 +19,6 @@ footer {
 
 a {
     color: #3c9ff5;
-    cursor: pointer;
 }
 
 
@@ -81,11 +80,11 @@ div#test {
 }
 
 div#doc {
-    width: 80%;
-    padding: 20px 30px;
+    width: 30%;
+    padding: 20px;
 }
 
-div#menu {
+div#demo {
     width: 20%;
     left: 0;
     overflow: auto;
@@ -105,7 +104,7 @@ section>div {
     bottom: 0;
     right: 0;
     overflow: auto;
-    padding: 20px;
+    padding: 10px;
 }
 
 div {
@@ -180,16 +179,16 @@ button:hover {
     border-color: red !important;
 }
 
-div#menu li {
+div#demo li {
     list-style: none;
     margin: 10px 0;
     padding: 0;
     font-size: 16px;
 }
 
-div#menu ul {
+div#demo ul {
     margin: 10px;
-    padding: 0;`
+    padding: 0;
 }
 
 h2 {
@@ -200,21 +199,20 @@ table.reference {
     border: 1px solid #eee;
     border-collapse: collapse;
     font-size: 14px;
-    width: 90%;
 }
 
 table.reference td,table.reference th {
     border: 1px solid #eee;
-    padding: 7px;
+    padding: 6px;
 }
 
 table.reference th {
-    background: #f7f6f6;
+    background: #f9f8f8;
 }
 
 table.reference td:nth-child(2n-1) {
-    /* text-align: center; */
-    width: 15%;
+    text-align: center;
+    width: 10%;
     font-size: 16px;
 }
 
@@ -230,14 +228,4 @@ table.reference td:nth-child(2n-1) {
 
 ::-webkit-scrollbar-thumb:hover {
     background-color: rgba(113, 113, 113, 0.8);
-}
-
-div#menu {
-    left: 0;
-    width: 20%;
-}
-
-
-table.reference tr:nth-child(2n-1) {
-    background: #fafafa;
 }
