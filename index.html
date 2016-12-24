@@ -3,8 +3,144 @@
 <head>
 	<meta charset="UTF-8">
 	<title>正则表达式测试</title>
+    <meta name="keywords" content="正则表达式测试,js,正则表达式文档,常用正则表达式,js,reg,regexp" />
+    <meta name="description" content="正则表达式测试工具,提供文档以及常用正则表达式">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="icon" href="/images/logo.ico" type="image/x-icon">
+    <script type="text/javascript" src="js/jquery.js"></script>
 </head>
 <body>
-	
+    <header>
+    <a href="/">
+        <h1>正则表达式测试</h1>
+        </a>
+        <nav>
+            <a href="/" class="selected">正则表达式</a>
+            <a href="http://js.ch-un.com">JS文档</a>
+            <a href="http://css.ch-un.com">CSS文档</a>
+            <a href="http://www.ch-un.com" target="_blank">关于我</a>
+        </nav>
+    </header>
+    <section>
+    	<div id="doc"></div>
+    	<div id="test">
+    		<label for="">待匹配文本</label>
+    		<textarea name="" id="sourceText" cols="30" rows="5"></textarea>
+    		<label for="regText">正则表达式</label>
+    		<div>
+    			<input type="text" id="regText"/>
+    			<input type="checkbox" id="isGlobal" checked="checked" />全局搜索
+    			<input type="checkbox" id="isIgnoreCase"/>忽略大小写
+    			<button id="testAction">测试匹配</button>
+    		</div>
+    		<label for="testResult">匹配结果</label>
+    		<pre id="testResult"></pre>
+
+    		<label for="replaceText">替换文本</label>
+    		<div><input type="text" id="replaceText"/><button id="replaceAction">替换</button></div>
+
+    		<label for="replaceResult">替换结果</label>
+    		<pre id="replaceResult"></pre>
+    	</div>
+    	<div id="demo">
+    		<h2>常用正则表达式</h2>
+    		<ul class="nav nav-list well">
+    			<li><a href="#" title="([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))">匹配(年-月-日)格式日期</a></li>
+    			<li><a href="#" title="[\u4e00-\u9fa5]">匹配中文字符</a></li>
+    			<li><a href="#" title="[a-zA-Z]+">匹配英文字符</a></li>
+    			<li><a href="#" title="[0-9]+">匹配数字</a></li>
+    			<li><a href="#" title="\w+">匹配由数字、英文字母或者下划线 </a></li>
+    			<li><a href="#" title="[^\x00-\xff]">匹配双字节字符(包括汉字在内)</a></li>
+    			<li><a href="#" title="[\w!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[\w!#$%&amp;'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?">匹配Email地址</a></li>
+    			<li><a href="#" title="[a-zA-z]+://[^\s]*">匹配网址URL</a></li>
+    			<li><a href="#" title="\d{3}-\d{8}|\d{4}-\{7,8}">匹配国内电话号码</a></li>
+    			<li><a href="#" title="^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$">匹配18位身份证号</a></li>
+    			<li><a href="#" title="^[1-9]\d*$">匹配正整数</a></li>
+    			<li><a href="#" title="^-[1-9]\d*$">匹配负整数</a></li>
+    			<li><a href="#" title="^-?[1-9]\d*$">匹配整数</a></li>
+    			<li><a href="#" title="^[1-9]\d*|0$">匹配非负整数（正整数 + 0）</a></li>
+    			<li><a href="#" title="^-[1-9]\d*|0$">匹配非正整数（负整数 + 0）</a></li>
+    			<li><a href="#" title="^[1-9]\d*\.\d*|0\.\d*[1-9]\d*$">匹配正浮点数</a></li>
+    			<li><a href="#" title="^-[1-9]\d*\.\d*|-0\.\d*[1-9]\d*$">匹配负浮点数</a></li>
+    			<li><a href="#" title="([0-9]+)" replace="替换$1">替换数字</a></li>
+    		</ul>
+    	</div>
+    </section>
 </body>
+<script type="text/javascript">
+	$(function() {
+		$("#doc").load("./html/doc.html");
+		var doms = getDoms("sourceText","regText","isGlobal","isIgnoreCase","testAction","testResult","replaceText","replaceAction","replaceResult");
+
+		function isValidFields() {
+			var names = arguments;
+			$("#test .error").removeClass("error");
+			for (var i = 0; i < names.length; i++) {
+				var name = names[i];
+				if (!doms[name].val()) {
+					doms[name].focus();
+					doms[name].addClass("error");
+					return false;
+				}
+			}
+			return true;
+		}
+
+		function buildRegex() {
+			var op = "";
+			if (doms.isGlobal.prop("checked"))op = "g";
+			if (doms.isIgnoreCase.prop("checked"))op = op + "i";
+			return new RegExp(doms.regText.val(), op);
+		}
+
+
+
+		function testMatch() {
+			if (!isValidFields("sourceText","regText"))return false;
+			doms.testResult.html("");
+			var regex = buildRegex();
+			var result = doms.sourceText.val().match(regex);
+			if (null==result || 0==result.length) {
+				doms.testResult.text("（没有匹配）");
+				return false;
+			}
+			if (doms.isGlobal.prop("checked")) {
+				var strResult = "共找到 " + result.length + " 处匹配：\r\n";
+				for (var i=0;i < result.length;++i)strResult = strResult + result[i] + "\r\n";
+				doms.testResult.html(strResult);
+			}
+			else {
+				doms.testResult.html("匹配位置：" + regex.lastIndex + "\r\n匹配结果：" + result[0]);
+			}
+			return true;
+		}
+
+
+		$("#demo li a").click(function (){
+			var r = $(this).attr("replace");
+			doms.regText.val($(this).attr("title"));
+			if(r)doms.replaceText.val(r);
+			testMatch();
+		});
+
+		doms.testAction.on('click',testMatch);
+		doms.replaceAction.on('click',function(){
+			doms.replaceResult.html("");
+			if (!isValidFields("sourceText","regText","replaceText"))return false;
+			var regex = buildRegex();
+			doms.replaceResult.text(doms.sourceText.val().replace(regex,doms.replaceText.val()));
+		});
+	});
+
+
+	function getDoms(){
+		var names = arguments;
+		var doms = {};
+		for(var i = 0; i < names.length; i++){
+			var name = names[i];
+			doms[name] = $("#"+name);
+		}
+		return doms;
+	}
+</script>
 </html>
