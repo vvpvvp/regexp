@@ -160,9 +160,9 @@ button {
     color: #FFF;
     border-radius: 3px;
     font-size: inherit;
-    margin-left: 5px;
+    /* margin-left: 5px; */
     padding: 4px 10px;
-    vertical-align: middle;
+    /* vertical-align: middle; */
     outline: none;
     cursor: pointer;
 }
@@ -173,6 +173,7 @@ button:hover {
 
 #test>div>input[type='text'] {
     width: 400px;
+    margin-right: 10px;
 }
 
 .error {
@@ -228,4 +229,34 @@ table.reference td:nth-child(2n-1) {
 
 ::-webkit-scrollbar-thumb:hover {
     background-color: rgba(113, 113, 113, 0.8);
+}
+
+#savedList span {
+    background: #EEE;
+    padding: 0px 8px;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-right: 10px;
+    /* margin-top: 10px; */
+    line-height: 25px;
+    height: 25px;
+    color: #545454;
+    cursor: pointer;
+    display: inline-block;
+}
+
+#savedList span i {
+    /* padding: 0px 0  5px; */
+    margin-left: 4px;
+    cursor: pointer;
+    font-size: 35px;
+    line-height: 25px;
+    height: 25px;
+    vertical-align: -6px;
+    display: inline-block;
+    color: #d8d8d8;
+}
+
+#savedList span:hover i:hover {
+    color: #3c9ff5;
 }
